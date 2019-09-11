@@ -24,6 +24,6 @@ Start-Process -FilePath (Join-Path $toolsPath -ChildPath "SolutionPackager.exe")
  -ArgumentList "/action:pack /folder:C:\Dev\dynamics-sample\$solutionName /zipfile:$folder\$solutionName.zip" `
  -Wait
 
-Import-CrmSolution -conn $conn -SolutionName $solutionName -SolutionFilePath "$folder\$solutionName.zip"
+Import-CrmSolution -conn $conn -SolutionFilePath "$folder\$solutionName.zip"
 
 Remove-Item $folder -Force -Recurse

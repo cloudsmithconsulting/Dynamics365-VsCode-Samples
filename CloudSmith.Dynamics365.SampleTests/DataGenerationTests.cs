@@ -11,7 +11,6 @@ namespace CloudSmith.Dynamics365.SampleTests
     {
         //TODO: update this connection string with your username and password where it says {username} and {password} below.
         private static readonly string _connectionString = "AuthType=AD;ServiceUri=http://crmserver/test;Domain=contoso.local;UserName={username};Password={password}";
-        //private static readonly string _connectionString = "AuthType=AD;ServiceUri=http://crmserver/test;Domain=contoso.local;UserName=missioncommand;Password=$mokingTir33";
 
         // For more information on Bogus, see: https://github.com/bchavez/Bogus
         private static readonly Faker<Account> _accountGenerator = new Faker<Account>()
