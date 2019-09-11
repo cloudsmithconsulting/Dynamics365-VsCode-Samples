@@ -1,4 +1,4 @@
-# ![Cloudsmith Consulting LLC](https://cloudsmithstatics.azureedge.net/web/cloudsmith-notagline-450x103.png "Cloudsmith Consulting")<br> Welcome to the CRM Developer Sample in VSCode
+# ![Cloudsmith Consulting LLC](https://cloudsmithstatics.azureedge.net/web/cloudsmith-notagline-450x103.png "Cloudsmith Consulting")<br> Welcome to the Dynamics 365 Development tools for VSCode
 This sample is designed to help developers with a simple (manual) development loop using Visual Studio Code.  Many developers do not have access to a full Visual Studio license in order to use Microsoft's Dynamics CRM Development Toolkit.  This sample solution is designed to get you started.
 
 ---
