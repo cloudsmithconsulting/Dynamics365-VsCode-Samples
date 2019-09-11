@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="Bogus" version="28.0.3" />
+    <PackageReference Include="Dynamics365.UIAutomation.Api" version="8.2.0.6" />
+    <PackageReference Include="Microsoft.CrmSdk.CoreAssemblies" version="9.0.2.17" />
+    <PackageReference Include="Microsoft.CrmSdk.Deployment" version="9.0.2.9" />
+    <PackageReference Include="Microsoft.CrmSdk.Workflow" version="9.0.2.9" />
+    <PackageReference Include="Microsoft.CrmSdk.XrmTooling.CoreAssembly" version="9.0.2.27" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" version="2.22.302111727" />
+    <PackageReference Include="Newtonsoft.Json" version="9.0.1" />
+    <PackageReference Include="Selenium.Chrome.WebDriver" version="2.38" />
+    <PackageReference Include="Selenium.Support" version="3.11.2" />
+    <PackageReference Include="Selenium.WebDriver" version="3.11.2" />
+    <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.0" />
+  </ItemGroup>
+
+</Project>

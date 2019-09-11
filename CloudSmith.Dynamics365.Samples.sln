@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "CloudSmith.Dynamics365.SampleScripts", "CloudSmith.Dynamics365.SampleScripts\CloudSmith.Dynamics365.SampleScripts.pssproj", "{6907E610-79DF-4064-A2EF-4BE4915C2444}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SampleTests", "CloudSmith.Dynamics365.SampleTests\CloudSmith.Dynamics365.SampleTests.csproj", "{94A6BB76-9B7F-49DA-BD5B-B90C07F7D0EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6907E610-79DF-4064-A2EF-4BE4915C2444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6907E610-79DF-4064-A2EF-4BE4915C2444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6907E610-79DF-4064-A2EF-4BE4915C2444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6907E610-79DF-4064-A2EF-4BE4915C2444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94A6BB76-9B7F-49DA-BD5B-B90C07F7D0EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A6BB76-9B7F-49DA-BD5B-B90C07F7D0EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A6BB76-9B7F-49DA-BD5B-B90C07F7D0EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A6BB76-9B7F-49DA-BD5B-B90C07F7D0EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09BE3CBA-4E8C-4197-847B-1DCE296E8ADF}
+	EndGlobalSection
+EndGlobal

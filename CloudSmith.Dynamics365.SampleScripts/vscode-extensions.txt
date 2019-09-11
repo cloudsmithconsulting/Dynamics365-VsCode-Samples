@@ -1,0 +1,9 @@
+﻿ms-vscode.azure-account
+ms-vsts.team
+msjsdiag.debugger-for-chrome
+ms-vscode.csharp
+ms-vscode.powershell
+waderyan.nodejs-extension-pack
+ms-mssql.mssql
+jchannon.csharpextensions
+fernandoescolar.vscode-solution-explorer
