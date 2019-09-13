@@ -1,4 +1,6 @@
-﻿$sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+﻿#Greg
+
+$sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $targetNugetExe = ".\nuget.exe"
 Remove-Item .\Tools -Force -Recurse -ErrorAction Ignore
 Invoke-WebRequest $sourceNugetExe -OutFile $targetNugetExe
