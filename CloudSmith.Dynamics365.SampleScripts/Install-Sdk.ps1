@@ -62,7 +62,7 @@ $coreDestPath = Join-Path -Path $Path -ChildPath "CoreTools"
 md $coreDestPath
 $coreToolsFolder = Get-ChildItem $Path | Where-Object {$_.Name -match 'Microsoft.CrmSdk.CoreTools.'}
 $coreToolsGlob = "$Path\$coreToolsFolder\content\bin\coretools\*.*"
-move $coreToolsGlob .\Tools\CoreTools
+move $coreToolsGlob $coreDestPath
 $coreToolsRootFolder = "$Path\$coreToolsFolder"
 Remove-Item $coreToolsRootFolder -Force -Recurse
 
@@ -70,30 +70,36 @@ Remove-Item $coreToolsRootFolder -Force -Recurse
 ##Download Configuration Migration
 ##
 ./nuget install  Microsoft.CrmSdk.XrmTooling.ConfigurationMigration.Wpf -O $Path
-$ChildPath = Join-Path -Path $Path -ChildPath "ConfigurationMigration"
-md $ChildPath
+$configMigPath = Join-Path -Path $Path -ChildPath "ConfigurationMigration"
+md $configMigPath
 $configMigFolder = Get-ChildItem $Path | Where-Object {$_.Name -match 'Microsoft.CrmSdk.XrmTooling.ConfigurationMigration.Wpf.'}
-move .\Tools\$configMigFolder\tools\*.* .\Tools\ConfigurationMigration
-Remove-Item .\Tools\$configMigFolder -Force -Recurse
+$configMigGlob = "$Path\$configMigFolder\tools\*.*"
+move $configMigGlob $configMigPath
+$configMigRootFolder = "$Path\$configMigFolder"
+Remove-Item $configMigRootFolder -Force -Recurse
 
 ##
 ##Download Package Deployer 
 ##
 ./nuget install  Microsoft.CrmSdk.XrmTooling.PackageDeployment.WPF -O $Path
-$ChildPath = Join-Path -Path $Path -ChildPath "PackageDeployment"
-md $ChildPath
-md .\Tools\PackageDeployment
+$pdPath = Join-Path -Path $Path -ChildPath "PackageDeployment"
+md $pdPath
 $pdFolder = Get-ChildItem $Path | Where-Object {$_.Name -match 'Microsoft.CrmSdk.XrmTooling.PackageDeployment.Wpf.'}
-move .\Tools\$pdFolder\tools\*.* .\Tools\PackageDeployment
-Remove-Item .\Tools\$pdFolder -Force -Recurse
+$pdGlob = "$Path\$pdFolder\tools\*.*"
+move $pdGlob $pdPath
+$pdRootFolder = "$Path\$pdFolder"
+Remove-Item $pdRootFolder -Force -Recurse
 
 ##
 ##Download Package Deployer PowerShell module
 ##
 ./nuget install Microsoft.CrmSdk.XrmTooling.PackageDeployment.PowerShell -O $Path
+$pdPoshPath = Join-Path -Path $Path -ChildPath "PackageDeployment.PowerShell"
 $pdPoshFolder = Get-ChildItem $Path | Where-Object {$_.Name -match 'Microsoft.CrmSdk.XrmTooling.PackageDeployment.PowerShell.'}
-move .\Tools\$pdPoshFolder\tools\*.* .\Tools\PackageDeployment.PowerShell
-Remove-Item .\Tools\$pdPoshFolder -Force -Recurse
+$pdPoshGlob = "$Path\$pdPoshFolder\tools\*.*"
+move $pdPoshGlob $pdPoshPath
+$pdPoshRootFolder = "$Path\$pdPoshFolder"
+Remove-Item $pdPoshRootFolder -Force -Recurse
 
 ##
 ##Remove NuGet.exe
