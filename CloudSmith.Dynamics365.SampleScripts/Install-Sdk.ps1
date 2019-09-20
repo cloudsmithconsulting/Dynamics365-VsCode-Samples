@@ -101,6 +101,8 @@ move $pdPoshGlob $pdPoshPath
 $pdPoshRootFolder = "$Path\$pdPoshFolder"
 Remove-Item $pdPoshRootFolder -Force -Recurse
 
+
+
 ##
 ##Remove NuGet.exe
 ##
