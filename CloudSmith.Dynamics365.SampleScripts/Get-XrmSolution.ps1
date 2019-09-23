@@ -1,9 +1,46 @@
-﻿##Download Microsoft.Xrm.Data.PowerShell and install it.
+﻿<# PSScriptInfo
+.VERSION 1.0.0
+.GUID e009159d-97e2-492a-a289-42426518dd41
+.AUTHOR CloudSmith Consulting LLC
+.COMPANYNAME CloudSmith Consulting LLC
+.COPYRIGHT (c) 2019 CloudSmith Consulting LLC.  All Rights Reserved.
+.TAGS Windows PowerShell Setup Dynamics CRM OneBox
+.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template/blob/master/LICENSE
+.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template
+.ICONURI 
+.EXTERNALMODULEDEPENDENCIES 
+.REQUIREDSCRIPTS 
+.EXTERNALSCRIPTDEPENDENCIES 
+.RELEASENOTES
+#>
 
-$solutionName = "CloudSmithSample"
-$toolsPath = "C:\Deploy\Tools\CoreTools"
-$moduleName = "Microsoft.Xrm.Data.Powershell"
-$moduleVersion = "2.7.2"
+<# 
+.DESCRIPTION 
+ Installs the SDK
+#> 
+
+<#
+.SYNOPSIS 
+    Let's you quickly install the SDK on your computer
+
+.DESCRIPTION
+    This script was created to quickly and easily install the SDK on a computer
+
+.EXAMPLE
+    .\Install-Sdk -Path ".\Path\To\Install"
+    
+.Notes
+#>
+# Run this script *AFTER* the CRM SDK has been deployed.
+##Download Microsoft.Xrm.Data.PowerShell and install it.
+
+Param
+(
+	[string] $solutionName = "CloudSmithSample",
+	[string] $toolsPath = "C:\Deploy\Tools\CoreTools",
+	[string] $moduleName = "Microsoft.Xrm.Data.Powershell",
+	[string] $moduleVersion = "2.7.2"
+)
 
 if (!(Get-Module -ListAvailable -Name $moduleName )) 
 {
