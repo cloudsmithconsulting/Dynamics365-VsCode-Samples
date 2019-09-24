@@ -36,41 +36,41 @@
 
 Param
 (
-	[string] $solutionName = "CloudSmithSample",
-	[string] $toolsPath = "C:\Deploy\Tools\CoreTools",
-	[string] $moduleName = "Microsoft.Xrm.Data.Powershell",
-	[string] $moduleVersion = "2.7.2"
+	[string] $SolutionName = "CloudSmithSample",
+	[string] $ToolsPath = "C:\Deploy\Tools\CoreTools",
+	[string] $ModuleName = "Microsoft.Xrm.Data.Powershell",
+	[string] $ModuleVersion = "2.7.2"
 )
 
-if (!(Get-Module -ListAvailable -Name $moduleName )) 
+if (!(Get-Module -ListAvailable -Name $ModuleName )) 
 {
-    Install-Module -Name $moduleName -MinimumVersion $moduleVersion -Force
+    Install-Module -Name $ModuleName -MinimumVersion $ModuleVersion -Force
 }
 
-Import-Module $moduleName
+Import-Module $ModuleName
 
-$conn = Connect-CrmOnPremDiscovery -ServerUrl "http://crmserver/" -OrganizationName "test"
-$folder = (Join-Path -Path $env:TEMP -ChildPath $solutionName)
+$Conn = Connect-CrmOnPremDiscovery -ServerUrl "http://crmserver/" -OrganizationName "test"
+$Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
 
-If (!(Test-Path -Path $folder))
+If (!(Test-Path -Path $Folder))
 {
-    New-Item -Path $folder -ItemType Directory | Out-Null
+    New-Item -Path $Folder -ItemType Directory | Out-Null
 }
 
-Export-CrmSolution -conn $conn -SolutionName $solutionName -SolutionFilePath $folder -SolutionZipFileName "$solutionName.zip"
+Export-CrmSolution -conn $Conn -SolutionName $SolutionName -SolutionFilePath $Folder -SolutionZipFileName "$SolutionName.zip"
 
 If (!(Test-Path -Path "C:\Dev\dynamics-sample"))
 {
     New-Item -Path "C:\Dev\dynamics-sample" -ItemType Directory | Out-Null
 }
 
-If (!(Test-Path -Path "C:\Dev\dynamics-sample\$solutionName"))
+If (!(Test-Path -Path "C:\Dev\dynamics-sample\$SolutionName"))
 {
-    New-Item -Path "C:\Dev\dynamics-sample\$solutionName" -ItemType Directory | Out-Null
+    New-Item -Path "C:\Dev\dynamics-sample\$SolutionName" -ItemType Directory | Out-Null
 }
 
-Start-Process -FilePath (Join-Path $toolsPath -ChildPath "SolutionPackager.exe") `
- -ArgumentList "/action:extract /folder:C:\Dev\dynamics-sample\$solutionName /zipfile:$folder\$solutionName.zip" `
+Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe") `
+ -ArgumentList "/action:extract /folder:C:\Dev\dynamics-sample\$SolutionName /zipfile:$Folder\$SolutionName.zip" `
  -Wait
 
- Remove-Item $folder -Force -Recurse
+ Remove-Item $Folder -Force -Recurse
