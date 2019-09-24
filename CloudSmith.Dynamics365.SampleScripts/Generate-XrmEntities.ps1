@@ -43,10 +43,10 @@ If (!(Test-Path -Path $Path))
     New-Item -Path $Path -ItemType Directory | Out-Null
 }
 
-$toolsPath = "C:\Deploy\Tools\CoreTools"
+$ToolsPath = "C:\Deploy\Tools\CoreTools"
 
 $FullPath = (Join-Path -Path $Path -ChildPath "XrmEntities.cs")
 
-Start-Process -FilePath (Join-Path $toolsPath -ChildPath "CrmSvcUtil.exe") `
+Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe") `
  -ArgumentList "/url:http://crmserver/test/XRMServices/2011/Organization.svc /username:missioncommand /password:`$mokingTir33 /domain:CONTOSO /namespace:CloudSmith.Dynamics365.SampleTests /out:$FullPath" `
  -Wait
