@@ -38,7 +38,8 @@ Param
 [string] $ToolsPath = "C:\Deploy\Tools\CoreTools",
 [string] $ModuleName = "Microsoft.Xrm.Data.Powershell",
 [string] $ModuleVersion = "2.7.2",
-[switch] $Managed
+[switch] $Managed,
+[string] $ServerURL = "http://crmserver/"
 )
 
 if (!(Get-Module -ListAvailable -Name $ModuleName )) 
@@ -48,7 +49,7 @@ if (!(Get-Module -ListAvailable -Name $ModuleName ))
 
 Import-Module $ModuleName
 
-$Conn = Connect-CrmOnPremDiscovery -ServerUrl "http://crmserver/" -OrganizationName "test"
+$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerURL -OrganizationName "test"
 $Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
 
 If (!(Test-Path -Path $Folder))
