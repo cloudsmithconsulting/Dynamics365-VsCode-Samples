@@ -4,30 +4,37 @@
 .AUTHOR CloudSmith Consulting LLC
 .COMPANYNAME CloudSmith Consulting LLC
 .COPYRIGHT (c) 2019 CloudSmith Consulting LLC.  All Rights Reserved.
-.TAGS Windows PowerShell Setup Dynamics CRM OneBox
-.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template/blob/master/LICENSE
-.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template
+.TAGS Windows PowerShell Development Dev Dynamics CRM OnPremises DevOps
+.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples/blob/master/LICENSE
+.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples
 .ICONURI 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES Microsoft.CrmSdk.CoreAssemblies
 .REQUIREDSCRIPTS 
 .EXTERNALSCRIPTDEPENDENCIES 
-.RELEASENOTES
+.RELEASENOTES 1.0 Sample for PowerShell driven Dynamics CRM development loop.
 #>
 
 <# 
 .DESCRIPTION 
- Generates the SDK
+ Generates entities into a folder using CrmSvcUtil.
 #> 
 
 <#
 .SYNOPSIS 
-    Let's you quickly generate the SDK on your computer
+    Automates generation of strongly typed entities.  
 
 .DESCRIPTION
-    This script was created to quickly and easily generate the SDK on a computer
+    This script is to be used after changes have been made to a solution 
+	in Dynamics 365 CE.  The output file is the result of running CrmSvcUtil.
 
 .EXAMPLE
-    .\Install-Sdk -Path ".\Path\To\Install"
+    .\Generate-XrmEntities `
+		-ConnectionString "AuthType=AD;Url=http://server/org;Username=username;Password=password;Domain=domain" `
+		-Path "C:\dev\dynamics-solution\plugin" `
+		-OutputFile "XrmEntities.cs"
+		-ToolsPath "C:\deploy\tools\coretools" 
+		# Optional line below.  
+		-Namespace "MyNamespace"
     
 .Notes
 #>
@@ -35,7 +42,27 @@
 
 Param
 (
-	[string] $Path = 'C:\Dev\dynamics-sample'
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE Connection String")]
+	$ConnectionString,
+
+	[string]
+	[parameter(Mandatory = $true, ParameterSetName = "Generation", HelpMessage = "The path where the generated files will go.")]
+	[ValidateScript({Test-Path $_})]
+	$Path,
+
+	[string]
+	[parameter(Mandatory = $true, ParameterSetName = "Generation", HelpMessage = "The name of the file to output.")]
+	$OutputFile = "XrmEntities.cs",
+
+	[string]
+	[parameter(Mandatory = $false, ParameterSetName = "Generation", HelpMessage = "The namespace to use for code generation.")]
+	$Namespace,
+
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Tools", HelpMessage = "Path to CrmSvcUtil.exe")]
+	[ValidateScript({Test-Path $_})]
+	$ToolsPath = "C:\Deploy\Tools\CoreTools"
 )
 
 If (!(Test-Path -Path $Path))
@@ -43,10 +70,13 @@ If (!(Test-Path -Path $Path))
     New-Item -Path $Path -ItemType Directory | Out-Null
 }
 
-$ToolsPath = "C:\Deploy\Tools\CoreTools"
+$FullPath = (Join-Path -Path $Path -ChildPath $OutputFile)
 
-$FullPath = (Join-Path -Path $Path -ChildPath "XrmEntities.cs")
+if ($Namespace -ne $null)
+{
+	$Namespace = "/namespace:$Namespace "
+}
 
 Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe") `
- -ArgumentList "/url:http://crmserver/test/XRMServices/2011/Organization.svc /username:missioncommand /password:`$mokingTir33 /domain:CONTOSO /namespace:CloudSmith.Dynamics365.SampleTests /out:$FullPath" `
- -Wait
+	-ArgumentList "/connectionstring:'$ConnectionString' $Namespace/out:$FullPath" `
+	-Wait
