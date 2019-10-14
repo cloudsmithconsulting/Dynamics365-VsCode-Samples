@@ -108,7 +108,7 @@ If (!(Test-Path -Path $Folder))
     New-Item -Path $Folder -ItemType Directory | Out-Null
 }
 
-$Argument = "/action:pack /folder:C:\Dev\dynamics-sample\$SolutionName /zipfile:$Folder\$SolutionName.zip" 
+$Argument = "/action:pack /folder:$Path /zipfile:$Folder\$SolutionName.zip" 
 
 if ($Managed -eq $true)
 {
