@@ -4,36 +4,41 @@
 .AUTHOR CloudSmith Consulting LLC
 .COMPANYNAME CloudSmith Consulting LLC
 .COPYRIGHT (c) 2019 CloudSmith Consulting LLC.  All Rights Reserved.
-.TAGS Windows PowerShell Setup Dynamics CRM OneBox
-.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template/blob/master/LICENSE
-.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template
+.TAGS Windows PowerShell Development Dev Dynamics CRM OnPremises DevOps
+.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples/blob/master/LICENSE
+.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples
 .ICONURI 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES Microsoft.CrmSdk.CoreAssemblies
 .REQUIREDSCRIPTS 
 .EXTERNALSCRIPTDEPENDENCIES 
-.RELEASENOTES
+.RELEASENOTES 1.0 Sample for PowerShell driven Dynamics CRM development loop.
 #>
 
 <# 
 .DESCRIPTION 
- Installs the SDK
+ Installs the Dynamics 365 CE SDK using NuGet.
 #> 
 
 <#
 .SYNOPSIS 
-    Let's you quickly install the SDK on your computer
+    Automates download and unpack of NuGet packages related to the CRM SDK.
 
 .DESCRIPTION
-    This script was created to quickly and easily install the SDK on a computer
+    This script was created to quickly and easily install the SDK on a computer.
+	The output is a Tools folder that you can use with the remaining scripts in this library.
 
 .EXAMPLE
-    .\Install-Sdk -Path ".\Path\To\Install"
+    .\Install-Sdk `
+		-Path "C:\deploy\tools" 
     
 .Notes
 #>
 Param
 (
-	[string] $Path = ".\Tools"
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Location where unpacked SDK will go")]
+	[ValidateScript({Test-Path $_})]
+	$Path
 )
 
 $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
