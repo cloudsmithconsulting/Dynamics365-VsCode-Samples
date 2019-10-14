@@ -4,44 +4,80 @@
 .AUTHOR CloudSmith Consulting LLC
 .COMPANYNAME CloudSmith Consulting LLC
 .COPYRIGHT (c) 2019 CloudSmith Consulting LLC.  All Rights Reserved.
-.TAGS Windows PowerShell Setup Dynamics CRM OneBox
-.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template/blob/master/LICENSE
-.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics-ARM-Template
+.TAGS Windows PowerShell Development Dev Dynamics CRM OnPremises DevOps
+.LICENSEURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples/blob/master/LICENSE
+.PROJECTURI https://github.com/cloudsmithconsulting/Dynamics365-VsCode-Samples
 .ICONURI 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES Microsoft.Xrm.Data.PowerShell
 .REQUIREDSCRIPTS 
 .EXTERNALSCRIPTDEPENDENCIES 
-.RELEASENOTES
+.RELEASENOTES 1.0 Sample for PowerShell driven Dynamics CRM development loop.
 #>
 
 <# 
 .DESCRIPTION 
- Installs the SDK
+ Retrieves a Dynamics 365 CE solution from a server and unpacks it into a specified path.
 #> 
 
 <#
 .SYNOPSIS 
-    Let's you quickly install the SDK on your computer
+    Automates solution export, download and unpack tasks.
 
 .DESCRIPTION
-    This script was created to quickly and easily install the SDK on a computer
+    This script is to be used after changes have been made to a solution 
+	in Dynamics 365 CE.  The output file and folder structure are suitable for 
+	version control.
 
 .EXAMPLE
-    .\Install-Sdk -Path ".\Path\To\Install"
+    .\Get-XrmSolution `
+		-ServerUrl "http://servername" `
+		-OrgName = "test" `
+		-SolutionName "Test-Solution" `
+		-Path "C:\dev\dynamics-solution" `
+		-ToolsPath "C:\deploy\tools\coretools" `
+		# Optional line below.  If you do not supply credentials, you will be prompted for them.
+		-Credential = New-Object System.Management.Automation.PSCredential (“username”, ( ConvertTo-SecureString “password” -AsPlainText -Force ) ) `
     
 .Notes
 #>
-# Run this script *AFTER* the CRM SDK has been deployed.
 ##Download Microsoft.Xrm.Data.PowerShell and install it.
-
 Param
 (
-	[string] $SolutionName = "CloudSmithSample",
-	[string] $ToolsPath = "C:\Deploy\Tools\CoreTools",
-	[string] $ModuleName = "Microsoft.Xrm.Data.Powershell",
-	[string] $ModuleVersion = "2.7.2"
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE server URL (no org name)")]
+	[ValidatePattern('http(s)?://[\w-]+(/[\w- ./?%&=]*)?')]
+	$ServerUrl,
+
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE organization name")]
+	$OrgName,
+
+	[string]
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Name of the solution to export")]
+	$SolutionName,
+
+	[string]
+	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "The path where solution files will be unpacked")]
+	[ValidateScript({Test-Path $_})]
+	$Path,
+
+    [System.Management.Automation.PSCredential]
+	[Parameter(Mandatory=$false, ParameterSetName = "Deployment", HelpMessage = "Credentials of user for authentication.")]
+    [ValidateNotNull()]
+    [System.Management.Automation.Credential()]
+	$Credential = $Null,
+
+	[string] 
+	[parameter(Mandatory = $true, ParameterSetName = "Tools", HelpMessage = "Path to SolutionPackager.exe")]
+	[ValidateScript({Test-Path $_})]
+	$ToolsPath = "C:\Deploy\Tools\CoreTools"
 )
 
+# locals
+[string] $ModuleName = "Microsoft.Xrm.Data.Powershell";
+[string] $ModuleVersion = "2.7.2";
+
+# ensure Microsoft.Xrm.Data.PowerShell dependency is installed and imported.
 if (!(Get-Module -ListAvailable -Name $ModuleName )) 
 {
     Install-Module -Name $ModuleName -MinimumVersion $ModuleVersion -Force
@@ -49,7 +85,18 @@ if (!(Get-Module -ListAvailable -Name $ModuleName ))
 
 Import-Module $ModuleName
 
-$Conn = Connect-CrmOnPremDiscovery -ServerUrl "http://crmserver/" -OrganizationName "test"
+# connect to on-prem
+$Conn;
+
+if ($Credential -ne $null)
+{
+	$Conn = Connect-CrmOnPremDiscovery -Credential $Credential -ServerUrl $ServerUrl -OrganizationName $OrgName
+}
+else
+{
+	$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerUrl -OrganizationName $OrgName
+}
+
 $Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
 
 If (!(Test-Path -Path $Folder))
@@ -57,20 +104,21 @@ If (!(Test-Path -Path $Folder))
     New-Item -Path $Folder -ItemType Directory | Out-Null
 }
 
+Write-Host "Running export job on: $SolutionName";
+
 Export-CrmSolution -conn $Conn -SolutionName $SolutionName -SolutionFilePath $Folder -SolutionZipFileName "$SolutionName.zip"
 
-If (!(Test-Path -Path "C:\Dev\dynamics-sample"))
+$SolutionPath = (Join-Path $Path -ChildPath $SolutionName);
+
+If (!(Test-Path -Path $SolutionPath))
 {
-    New-Item -Path "C:\Dev\dynamics-sample" -ItemType Directory | Out-Null
+    New-Item -Path $SolutionPath -ItemType Directory | Out-Null
 }
 
-If (!(Test-Path -Path "C:\Dev\dynamics-sample\$SolutionName"))
-{
-    New-Item -Path "C:\Dev\dynamics-sample\$SolutionName" -ItemType Directory | Out-Null
-}
+Write-Host "Unpacking solution $SolutionName";
 
 Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe") `
- -ArgumentList "/action:extract /folder:C:\Dev\dynamics-sample\$SolutionName /zipfile:$Folder\$SolutionName.zip" `
- -Wait
+	-ArgumentList "/action:extract /folder:$SolutionPath /zipfile:$Folder\$SolutionName.zip" `
+	-Wait
 
  Remove-Item $Folder -Force -Recurse

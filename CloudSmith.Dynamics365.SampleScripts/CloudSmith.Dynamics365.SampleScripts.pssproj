@@ -42,7 +42,6 @@
     <Content Include="assets\life_cycle.png" />
     <Content Include="assets\staging_area.png" />
     <Content Include="git.md" />
-    <Content Include="readme.md" />
     <Content Include="vscode-extensions.txt" />
   </ItemGroup>
   <ItemGroup>
