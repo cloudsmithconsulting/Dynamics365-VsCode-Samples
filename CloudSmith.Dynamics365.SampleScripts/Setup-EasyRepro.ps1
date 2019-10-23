@@ -36,7 +36,7 @@
 Param
 (
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Name of Dynamics 365 CE Server (FQDN or NetBIOS)")]
+	[parameter(Mandatory = $true, HelpMessage = "Name of Dynamics 365 CE Server (FQDN or NetBIOS)")]
 	$Server
 )
 

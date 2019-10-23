@@ -36,10 +36,11 @@
 Param
 (
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Location where unpacked SDK will go")]
-	[ValidateScript({Test-Path $_})]
+	[parameter(Mandatory = $true, HelpMessage = "Location where unpacked SDK will go")]
 	$Path
 )
+
+New-Item -ItemType Directory -Path $Path -Force | Out-Null
 
 $sourceNugetExe = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
 $targetNugetExe = ".\nuget.exe"
