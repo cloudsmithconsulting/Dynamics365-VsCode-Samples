@@ -21,6 +21,10 @@ If you are reading this file on a VM Deployed from CloudSmith's project template
 # What's inside this toolkit?
 There are 2 "projects" with several components inside this toolkit.  Inside each project are a number of files, described below:
 
+## CloudSmith.Dynamics365.CrmSvcUtil
+**What is it?**  
+Service Utility extensions for CrmSvcUtil.exe that make it much more useful.  You can [read about it here](CloudSmith.Dynamics365.CrmSvcUtil/ReadMe.md).
+
 ## CloudSmith.Dynamics365.SampleScripts
 **What is it?**  
 PowerShell scripts that handle the basic development loop of managing a CRM solution in Visual Studio Code.
