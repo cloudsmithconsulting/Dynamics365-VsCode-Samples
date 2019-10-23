@@ -44,36 +44,36 @@
 Param
 (
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE server URL (no org name)")]
+	[parameter(Mandatory = $true, HelpMessage = "Dynamics 365 CE server URL (no org name)")]
 	[ValidatePattern('http(s)?://[\w-]+(/[\w- ./?%&=]*)?')]
 	$ServerUrl,
 
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE organization name")]
+	[parameter(Mandatory = $true, HelpMessage = "Dynamics 365 CE organization name")]
 	$OrgName,
 
 	[string]
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Name of the solution to deploy")]
+	[parameter(Mandatory = $true, HelpMessage = "Name of the solution to deploy")]
 	$SolutionName,
 
 	[string]
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "The path where solution files will be packed")]
+	[parameter(Mandatory = $true, HelpMessage = "The path where solution files will be packed")]
 	[ValidateScript({Test-Path $_})]
 	$Path,
 
     [System.Management.Automation.PSCredential]
-	[Parameter(Mandatory=$false, ParameterSetName = "Deployment", HelpMessage = "Credentials of user for authentication.")]
+	[Parameter(Mandatory=$false, HelpMessage = "Credentials of user for authentication.")]
     [ValidateNotNull()]
     [System.Management.Automation.Credential()]
 	$Credential = $Null,
 
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Tools", HelpMessage = "Path to SolutionPackager.exe")]
+	[parameter(Mandatory = $true, HelpMessage = "Path to SolutionPackager.exe")]
 	[ValidateScript({Test-Path $_})]
 	$ToolsPath = "C:\Deploy\Tools\CoreTools",
 
 	[switch] 
-	[parameter(ParameterSetName = "Deployment", HelpMessage = "Switch indicating if this should be deployed as a managed solution.")]
+	[parameter(HelpMessage = "Switch indicating if this should be deployed as a managed solution.")]
 	$Managed
 )
 

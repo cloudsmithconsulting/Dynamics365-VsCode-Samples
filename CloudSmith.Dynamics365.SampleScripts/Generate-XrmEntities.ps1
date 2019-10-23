@@ -29,40 +29,65 @@
 
 .EXAMPLE
     .\Generate-XrmEntities `
-		-ConnectionString "AuthType=AD;Url=http://server/org;Username=username;Password=password;Domain=domain" `
+		-Url "http://server/org/XRMServices/2011/Organization.svc" `
+		-Username "user" `
+		-Password "Password" `
+		-Domain "Domain" `
 		-Path "C:\dev\dynamics-solution\plugin" `
 		-OutputFile "XrmEntities.cs"
 		-ToolsPath "C:\deploy\tools\coretools" 
 		# Optional line below.  
 		-Namespace "MyNamespace"
+		-ServiceContextName "XrmServiceContext"
+		-GenerateActions
     
 .Notes
 #>
 # Run this script *AFTER* the CRM SDK has been deployed.
 
+
 Param
 (
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Dynamics 365 CE Connection String")]
-	$ConnectionString,
+	[parameter(Mandatory = $true, HelpMessage = "A url or path to the SDK endpoint to contact for metadata")]
+	$Url,
+
+	[string] 
+	[parameter(Mandatory = $true, HelpMessage = "Username to use when connecting to the server for authentication")]
+	$Username,
 
 	[string]
-	[parameter(Mandatory = $true, ParameterSetName = "Generation", HelpMessage = "The path where the generated files will go.")]
-	[ValidateScript({Test-Path $_})]
+	[parameter(Mandatory = $true, HelpMessage = "Password to use when connecting to the server for authentication")]
+	$Password,
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = " Domain to authenticate against when connecting to the server")]
+	$Domain = "",
+
+	[string]
+	[parameter(Mandatory = $true, HelpMessage = "The path where the generated files will go.")]
 	$Path,
 
 	[string]
-	[parameter(Mandatory = $true, ParameterSetName = "Generation", HelpMessage = "The name of the file to output.")]
+	[parameter(Mandatory = $true, HelpMessage = "The name of the file to output.")]
 	$OutputFile = "XrmEntities.cs",
 
 	[string]
-	[parameter(Mandatory = $false, ParameterSetName = "Generation", HelpMessage = "The namespace to use for code generation.")]
-	$Namespace,
+	[parameter(Mandatory = $false, HelpMessage = "The namespace to use for code generation.")]
+	$Namespace = "",
 
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Tools", HelpMessage = "Path to CrmSvcUtil.exe")]
+	[parameter(Mandatory = $true, HelpMessage = "Path to CrmSvcUtil.exe")]
 	[ValidateScript({Test-Path $_})]
-	$ToolsPath = "C:\Deploy\Tools\CoreTools"
+	$ToolsPath = "C:\Deploy\Tools\CoreTools",
+
+	[string]
+	[parameter(Mandatory = $false, HelpMessage = "The name of the service context to generate (if needed).")]
+	$ServiceContextName = "",
+
+	[switch]
+	[parameter(HelpMessage = "If supplied, will instruct CrmSvcUtil to generate action requests.")]
+	$GenerateActions = $Null
 )
 
 If (!(Test-Path -Path $Path))
@@ -71,12 +96,32 @@ If (!(Test-Path -Path $Path))
 }
 
 $FullPath = (Join-Path -Path $Path -ChildPath $OutputFile)
+$GeerateActionsString = " "
 
-if ($Namespace -ne $null)
+if ($Domain -ne "")
+{
+	$Domain = "/domain:$Domain "
+}
+
+if ($ServiceContextName -ne "")
+{
+	$ServiceContextName = "/serviceContextName:$ServiceContextName "
+}
+
+if ($Namespace -ne "")
 {
 	$Namespace = "/namespace:$Namespace "
 }
 
-Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe") `
-	-ArgumentList "/connectionstring:'$ConnectionString' $Namespace/out:$FullPath" `
-	-Wait
+if ($GenerateActions)
+{
+	$GenerateActionsString = "/generateActions "
+}
+
+$CrmSvcUtil = (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe")
+$Arguments = "/url:'$Url' /username:$Username /password:$Password $Domain$Namespace$ServiceContextName$GenerateActionsString/out:$FullPath"
+
+# Write-Host "& `"$CrmSvcUtil`" $Arguments"
+# Start-Process seems to fail when running CrmSvcUtil, so we have to invoke a literal instead (yuck)
+# Start-Process -FilePath $CrmSvcUtil -ArgumentList $Arguments -NoNewWindow -PassThru -Wait
+Invoke-Expression "& `"$CrmSvcUtil`" $Arguments"

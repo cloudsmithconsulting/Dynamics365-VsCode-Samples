@@ -36,7 +36,7 @@
 Param
 (
 	[string] 
-	[parameter(Mandatory = $true, ParameterSetName = "Deployment", HelpMessage = "Location where unpacked SDK will go")]
+	[parameter(Mandatory = $true, HelpMessage = "Location where unpacked SDK will go")]
 	[ValidateScript({Test-Path $_})]
 	$Path
 )
