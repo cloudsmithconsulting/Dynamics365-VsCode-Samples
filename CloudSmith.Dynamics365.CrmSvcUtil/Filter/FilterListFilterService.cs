@@ -79,7 +79,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.OptionSets.AddBy(optionSetMetadata);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.OptionSets.AddBy(optionSetMetadata);
+                        }
 
                         return value.Value;
                     }
@@ -120,7 +123,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.Options.AddBy(optionMetadata);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.Options.AddBy(optionMetadata);
+                        }
 
                         return value.Value;
                     }
@@ -155,7 +161,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.Attributes.AddBy(attributeMetadata);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.Attributes.AddBy(attributeMetadata);
+                        }
 
                         return value.Value;
                     }
@@ -193,7 +202,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.Entities.AddBy(entityMetadata);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.Entities.AddBy(entityMetadata);
+                        }
 
                         return value.Value;
                     }
@@ -228,7 +240,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.Relationships.AddBy(relationshipMetadata);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.Relationships.AddBy(relationshipMetadata);
+                        }
 
                         return value.Value;
                     }
@@ -271,7 +286,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.SdkMessages.AddBy(sdkMessage);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.SdkMessages.AddBy(sdkMessage);
+                        }
 
                         return value.Value;
                     }
@@ -306,7 +324,10 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
 
                     if (value.HasValue)
                     {
-                        DynamicsMetadataCache.SdkMessagePairs.AddBy(sdkMessagePair);
+                        if (value.Value)
+                        {
+                            DynamicsMetadataCache.SdkMessagePairs.AddBy(sdkMessagePair);
+                        }
 
                         return value.Value;
                     }

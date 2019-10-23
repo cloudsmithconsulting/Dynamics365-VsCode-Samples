@@ -19,31 +19,31 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
     {
         internal SolutionFilterService(BaseFilterService service, FilterListStrategy strategy)
             : base(service, strategy)
-        { }
+        { InitializeSolutionFilterService(); }
 
         public SolutionFilterService(ICodeWriterFilterService defaultService)
             : base(defaultService)
-        { }
+        { InitializeSolutionFilterService(); }
 
         internal SolutionFilterService(ICodeWriterFilterService defaultService, IServiceExtensionsConfiguration configuration)
             : base(defaultService, configuration)
-        { }
+        { InitializeSolutionFilterService(); }
 
         internal SolutionFilterService(ICodeWriterFilterService defaultService, IServiceExtensionsConfiguration configuration, FilterListStrategy strategy)
             : base(defaultService, configuration, strategy)
-        { }
+        { InitializeSolutionFilterService(); }
 
         public SolutionFilterService(ICodeWriterMessageFilterService defaultService)
             : base(defaultService)
-        { }
+        { InitializeSolutionFilterService(); }
 
         internal SolutionFilterService(ICodeWriterMessageFilterService defaultService, IServiceExtensionsConfiguration configuration)
             : base(defaultService, configuration)
-        { }
+        { InitializeSolutionFilterService(); }
 
         internal SolutionFilterService(ICodeWriterMessageFilterService defaultService, IServiceExtensionsConfiguration configuration, FilterListStrategy strategy)
             : base(defaultService, configuration, strategy)
-        { }
+        { InitializeSolutionFilterService(); }
 
         private IEnumerable<EntityMetadata> solutionEntities;
 
@@ -54,8 +54,11 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil.Filter
                 .Select(s => s.SolutionName)
                 .ToArray();
 
-            var service = new OrganizationServiceFactory().Create();
-            solutionEntities = GetSolutionEntities(solutions, service);
+            if (solutions?.Length > 0)
+            {
+                var service = new OrganizationServiceFactory().Create();
+                solutionEntities = GetSolutionEntities(solutions, service);
+            }
         }
 
         protected override bool? GenerateEntity(EntityMetadata entityMetadata)
