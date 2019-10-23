@@ -68,7 +68,7 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasAttributeFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
 
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateAttribute(attributeMetadata, services));
@@ -94,7 +94,7 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasEntityFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
 
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateEntity(entityMetadata, services));
@@ -116,10 +116,6 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
 
             if (!whitelist)
             {
-                /*
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasOptionSetFilters)
-                    return false;
-                    */
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateOption(optionMetadata, services));
             }
 
@@ -138,7 +134,7 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasOptionSetFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
 
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateOptionSet(optionSetMetadata, services));
@@ -164,10 +160,9 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                /*
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasEntityFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
-                    */
+
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateRelationship(relationshipMetadata, otherEntityMetadata, services));
 
                 if (!blacklist)
@@ -191,10 +186,9 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                /*
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasEntityFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
-                    */
+
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateSdkMessage(sdkMessage, services));
 
                 if (!blacklist)
@@ -218,10 +212,9 @@ namespace CloudSmith.Dynamics365.CrmSvcUtil
             }
             else
             {
-                /*
-                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive && Configuration.Filtering.Whitelist.HasEntityFilters)
+                if (Configuration.Filtering.HasWhitelist && Configuration.Filtering.Whitelist.Filter == WhitelistFilter.Exclusive)
                     return false;
-                    */
+
                 blacklist = _blacklistFilters.Any(filter => filter.GenerateSdkMessagePair(sdkMessagePair, services));
 
                 if (!blacklist)
