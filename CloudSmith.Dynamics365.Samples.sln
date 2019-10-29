@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SamplePlugin.v9.0", "CloudSmith.Dynamics365.SamplePlugin.v9.0\CloudSmith.Dynamics365.SamplePlugin.v9.0.csproj", "{DA06725E-493E-4F54-A054-532746D5F604}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.AssemblyScanner", "CloudSmith.Dynamics365.AssemblyScanner\CloudSmith.Dynamics365.AssemblyScanner.csproj", "{E4E24EBC-504C-4E01-9528-3484A857C20E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{DA06725E-493E-4F54-A054-532746D5F604}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA06725E-493E-4F54-A054-532746D5F604}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA06725E-493E-4F54-A054-532746D5F604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
