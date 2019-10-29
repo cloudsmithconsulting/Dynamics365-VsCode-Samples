@@ -16,6 +16,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudSmith.Dynamics365.CrmSvcUtil", "CloudSmith.Dynamics365.CrmSvcUtil\CloudSmith.Dynamics365.CrmSvcUtil.csproj", "{6907A8B4-6F8A-424A-9572-7CA0D5F35CDD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SamplePlugin.v8.0", "CloudSmith.Dynamics365.SamplePlugin.v8.0\CloudSmith.Dynamics365.SamplePlugin.v8.0.csproj", "{C197681F-AA7C-4F69-BAED-A425C0A29842}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SamplePlugin.v8.1", "CloudSmith.Dynamics365.SamplePlugin.v8.1\CloudSmith.Dynamics365.SamplePlugin.v8.1.csproj", "{F0AE471D-89DD-4F62-A7A4-3AA5914E0ADB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SamplePlugin.v8.2", "CloudSmith.Dynamics365.SamplePlugin.v8.2\CloudSmith.Dynamics365.SamplePlugin.v8.2.csproj", "{F142955E-90DC-4A9C-B004-AA78697475F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.SamplePlugin.v9.0", "CloudSmith.Dynamics365.SamplePlugin.v9.0\CloudSmith.Dynamics365.SamplePlugin.v9.0.csproj", "{DA06725E-493E-4F54-A054-532746D5F604}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSmith.Dynamics365.AssemblyScanner", "CloudSmith.Dynamics365.AssemblyScanner\CloudSmith.Dynamics365.AssemblyScanner.csproj", "{E4E24EBC-504C-4E01-9528-3484A857C20E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +44,26 @@ Global
 		{6907A8B4-6F8A-424A-9572-7CA0D5F35CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6907A8B4-6F8A-424A-9572-7CA0D5F35CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6907A8B4-6F8A-424A-9572-7CA0D5F35CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C197681F-AA7C-4F69-BAED-A425C0A29842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C197681F-AA7C-4F69-BAED-A425C0A29842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C197681F-AA7C-4F69-BAED-A425C0A29842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C197681F-AA7C-4F69-BAED-A425C0A29842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0AE471D-89DD-4F62-A7A4-3AA5914E0ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0AE471D-89DD-4F62-A7A4-3AA5914E0ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0AE471D-89DD-4F62-A7A4-3AA5914E0ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0AE471D-89DD-4F62-A7A4-3AA5914E0ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F142955E-90DC-4A9C-B004-AA78697475F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F142955E-90DC-4A9C-B004-AA78697475F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F142955E-90DC-4A9C-B004-AA78697475F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F142955E-90DC-4A9C-B004-AA78697475F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA06725E-493E-4F54-A054-532746D5F604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA06725E-493E-4F54-A054-532746D5F604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA06725E-493E-4F54-A054-532746D5F604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA06725E-493E-4F54-A054-532746D5F604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E24EBC-504C-4E01-9528-3484A857C20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
