@@ -36,6 +36,9 @@
 		-ToolsPath "C:\deploy\tools\coretools" `
 		# Optional lines below.  If you do not supply credentials, you will be prompted for them.
 		-Credential = New-Object System.Management.Automation.PSCredential (“username”, ( ConvertTo-SecureString “password” -AsPlainText -Force ) ) `
+		-MapFile "C:\dev\dynamics-solution\mapping.xml" `
+		-LogFile "C:\deploy\solutionpackager.log" `
+		-IncludeResourceFiles `
 		-Managed
     
 .Notes
@@ -72,6 +75,24 @@ Param
 	[ValidateScript({Test-Path $_})]
 	$ToolsPath = "C:\Deploy\Tools\CoreTools",
 
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Mapping file to use when calling SolutionPackager")]
+	[ValidateScript({Test-Path $_})]
+	$MapFile = $Null,
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Log file for SolutionPackager output")]
+	$LogFile = $Null,
+
+	[switch] 
+	[parameter(HelpMessage = "Switch indicating if SolutionPackager will extract or merge all string resources into .resx files.")]
+	$IncludeResourceFiles,
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Path where temporary solution file will be deployed.  If specified, the solution file is kept in this path.")]
+	[ValidateScript({Test-Path $_})]
+	$SaveSolution = $Null,
+
 	[switch] 
 	[parameter(HelpMessage = "Switch indicating if this should be deployed as a managed solution.")]
 	$Managed
@@ -82,8 +103,7 @@ Param
 [string] $ModuleVersion = "2.7.2";
 
 # ensure Microsoft.Xrm.Data.PowerShell dependency is installed and imported.
-if (!(Get-Module -ListAvailable -Name $ModuleName )) 
-{
+if (!(Get-Module -ListAvailable -Name $ModuleName ))  {
     Install-Module -Name $ModuleName -MinimumVersion $ModuleVersion -Force
 }
 
@@ -92,37 +112,51 @@ Import-Module $ModuleName
 # connect to on-prem
 $Conn;
 
-if ($Credential -ne $null)
-{
-	$Conn = Connect-CrmOnPremDiscovery -Credential $Credential -ServerUrl $ServerUrl -OrganizationName $OrgName
-}
-else
-{
-	$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerUrl -OrganizationName $OrgName
+Write-Host "Connecting to $ServerUrl/$OrgName`r";
+
+if ($Credential -ne $null) {
+	$Conn = Connect-CrmOnPremDiscovery -Credential $Credential -ServerUrl $ServerUrl -OrganizationName $OrgName 
+} else {
+	$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerUrl -OrganizationName $OrgName 
 }
 
-$Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
+if (-not ([string]::IsNullOrEmpty($SaveSolution))) {
+	$Folder = $SaveSolution
+} else {
+	$Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
+}
 
-If (!(Test-Path -Path $Folder))
-{
+If (!(Test-Path -Path $Folder)) {
     New-Item -Path $Folder -ItemType Directory | Out-Null
 }
 
-$Argument = "/action:pack /folder:$Path /zipfile:$Folder\$SolutionName.zip" 
+$Arguments = "/action:pack /folder:$Path /zipfile:$Folder\$SolutionName.zip /nologo" 
 
-if ($Managed -eq $true)
-{
-	$Argument = $Argument + " /packagetype:managed"
+if (-not ([string]::IsNullOrEmpty($MapFile))) {
+	$Arguments += " /map:""$MapFile"""
 }
 
-Write-Host "Packing solution $SolutionName";
+if (-not ([string]::IsNullOrEmpty($LogFile))) {
+	$Arguments += " /log:""$LogFile"""
+}
 
-Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe") `
- -ArgumentList $Argument `
- -Wait
+if ($IncludeResourceFiles -eq $true) {
+	$Arguments += " /localize"
+}
 
-Write-Host "Running import job on: $SolutionName";
+if ($Managed -eq $true) {
+	$Arguments += " /packagetype:managed"
+}
+
+Write-Host "Packing solution $SolutionName with arguments: $Arguments`r";
+
+$SolutionPackagerExe = (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe")
+Invoke-Expression "& `"$SolutionPackagerExe`" $Arguments"
+
+Write-Host "Running import job on: $SolutionName`r";
 
 Import-CrmSolution -conn $Conn -SolutionFilePath "$Folder\$SolutionName.zip"
 
 Remove-Item $Folder -Force -Recurse
+
+Write-Host "`r" 

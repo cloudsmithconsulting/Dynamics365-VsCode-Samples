@@ -35,8 +35,13 @@
 		-SolutionName "Test-Solution" `
 		-Path "C:\dev\dynamics-solution" `
 		-ToolsPath "C:\deploy\tools\coretools" `
-		# Optional line below.  If you do not supply credentials, you will be prompted for them.
-		-Credential = New-Object System.Management.Automation.PSCredential (“username”, ( ConvertTo-SecureString “password” -AsPlainText -Force ) ) `
+		# Optional lines below.  If you do not supply credentials, you will be prompted for them.
+		-Credential = New-Object System.Management.Automation.PSCredential (“username”, ( ConvertTo-SecureString “password” -AsPlainText -Force ) )  `
+		-MapFile "C:\dev\dynamics-solution\mapping.xml" `
+		-LogFile "C:\deploy\solutionpackager.log" `
+		-TemplateResourceLanguageCode "1033" `
+		-IncludeResourceFiles `
+		-AllowDelete 
     
 .Notes
 #>
@@ -70,7 +75,28 @@ Param
 	[string] 
 	[parameter(Mandatory = $true, HelpMessage = "Path to SolutionPackager.exe")]
 	[ValidateScript({Test-Path $_})]
-	$ToolsPath = "C:\Deploy\Tools\CoreTools"
+	$ToolsPath = "C:\Deploy\Tools\CoreTools",
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Mapping file to use when calling SolutionPackager")]
+	[ValidateScript({Test-Path $_})]
+	$MapFile = $Null,
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Log file for SolutionPackager output")]
+	$LogFile = $Null,
+
+	[string] 
+	[parameter(Mandatory = $false, HelpMessage = "Language to use when generating a template resource file")]
+	$TemplateResourceLanguageCode = "auto",
+
+	[switch] 
+	[parameter(HelpMessage = "Switch indicating if SolutionPackager will extract or merge all string resources into .resx files.")]
+	$IncludeResourceFiles,
+
+	[switch] 
+	[parameter(HelpMessage = "Switch indicating if unpacking a solution will delete removed components from the filesystem.")]
+	$AllowDelete
 )
 
 # locals
@@ -78,8 +104,7 @@ Param
 [string] $ModuleVersion = "2.7.2";
 
 # ensure Microsoft.Xrm.Data.PowerShell dependency is installed and imported.
-if (!(Get-Module -ListAvailable -Name $ModuleName )) 
-{
+if (!(Get-Module -ListAvailable -Name $ModuleName )) {
     Install-Module -Name $ModuleName -MinimumVersion $ModuleVersion -Force
 }
 
@@ -88,37 +113,57 @@ Import-Module $ModuleName
 # connect to on-prem
 $Conn;
 
-if ($Credential -ne $null)
-{
-	$Conn = Connect-CrmOnPremDiscovery -Credential $Credential -ServerUrl $ServerUrl -OrganizationName $OrgName
-}
-else
-{
-	$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerUrl -OrganizationName $OrgName
+Write-Host "Connecting to $ServerUrl/$OrgName`r";
+
+if ($Credential -ne $null) {
+	$Conn = Connect-CrmOnPremDiscovery -Credential $Credential -ServerUrl $ServerUrl -OrganizationName $OrgName 
+} else {
+	$Conn = Connect-CrmOnPremDiscovery -ServerUrl $ServerUrl -OrganizationName $OrgName 
 }
 
 $Folder = (Join-Path -Path $env:TEMP -ChildPath $SolutionName)
 
-If (!(Test-Path -Path $Folder))
-{
+if (!(Test-Path -Path $Folder)) {
     New-Item -Path $Folder -ItemType Directory | Out-Null
+} else {
+	Remove-Item $Folder\*.*
 }
 
-Write-Host "Running export job on: $SolutionName";
+Write-Host "Running export job on: $SolutionName`r";
 
 Export-CrmSolution -conn $Conn -SolutionName $SolutionName -SolutionFilePath $Folder -SolutionZipFileName "$SolutionName.zip"
 
 $SolutionPath = (Join-Path $Path -ChildPath $SolutionName);
 
-If (!(Test-Path -Path $SolutionPath))
-{
+If (!(Test-Path -Path $SolutionPath)) {
+	Write-Host "Creating folder: $SolutionPath`r";
     New-Item -Path $SolutionPath -ItemType Directory | Out-Null
 }
 
-Write-Host "Unpacking solution $SolutionName";
+$Arguments = "/action:extract /folder:""$SolutionPath"" /zipfile:""$Folder\$SolutionName.zip"" /sourceLoc:""$TemplateResourceLanguageCode"" /nologo"
 
-Start-Process -FilePath (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe") `
-	-ArgumentList "/action:extract /folder:$SolutionPath /zipfile:$Folder\$SolutionName.zip" `
-	-Wait
+if (-not ([string]::IsNullOrEmpty($MapFile))) {
+	$Arguments += " /map:""$MapFile"""
+}
 
- Remove-Item $Folder -Force -Recurse
+if (-not ([string]::IsNullOrEmpty($LogFile))) {
+	$Arguments += " /log:""$LogFile"""
+}
+
+if ($AllowDelete -eq $true) {
+	$Arguments += " /allowDelete:yes"
+} else {
+	$Arguments += " /allowDelete:no"
+}
+
+if ($IncludeResourceFiles -eq $true) {
+	$Arguments += " /localize"
+}
+
+Write-Host "Unpacking solution $SolutionName with arguments: $Arguments`r";
+
+$SolutionPackagerExe = (Join-Path $ToolsPath -ChildPath "SolutionPackager.exe")
+
+Invoke-Expression "& `"$SolutionPackagerExe`" $Arguments"
+
+Write-Host "`r"
