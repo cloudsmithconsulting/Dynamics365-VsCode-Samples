@@ -119,9 +119,6 @@ if ($GenerateActions)
 }
 
 $CrmSvcUtil = (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe")
-$Arguments = "/url:'$Url' /username:$Username /password:$Password $Domain$Namespace$ServiceContextName$GenerateActionsString/out:$FullPath"
+$Arguments = "/nologo /url:'$Url' /username:$Username /password:$Password $Domain$Namespace$ServiceContextName$GenerateActionsString/out:$FullPath"
 
-# Write-Host "& `"$CrmSvcUtil`" $Arguments"
-# Start-Process seems to fail when running CrmSvcUtil, so we have to invoke a literal instead (yuck)
-# Start-Process -FilePath $CrmSvcUtil -ArgumentList $Arguments -NoNewWindow -PassThru -Wait
 Invoke-Expression "& `"$CrmSvcUtil`" $Arguments"
