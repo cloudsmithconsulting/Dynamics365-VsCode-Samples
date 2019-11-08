@@ -119,6 +119,6 @@ if ($GenerateActions)
 }
 
 $CrmSvcUtil = (Join-Path $ToolsPath -ChildPath "CrmSvcUtil.exe")
-$Arguments = "/url:'$Url' /username:$Username /password:$Password $Domain$Namespace$ServiceContextName$GenerateActionsString/out:$FullPath"
+$Arguments = "/nologo /url:'$Url' /username:$Username /password:$Password $Domain$Namespace$ServiceContextName$GenerateActionsString/out:$FullPath"
 
 Invoke-Expression "& `"$CrmSvcUtil`" $Arguments"
