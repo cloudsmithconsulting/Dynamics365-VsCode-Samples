@@ -61,7 +61,7 @@ namespace AssemblyScanner
         {
             if (args.Length == 0)
             {
-                Console.Write(Error(100, "No command line parameters present"));
+                Console.WriteLine(Error(100, "No command line parameters present"));
 
                 return;
             }
@@ -70,7 +70,7 @@ namespace AssemblyScanner
 
             if (!File.Exists(file))
             {
-                Console.Write(Error(200, $"File {file} could not be found."));
+                Console.WriteLine(Error(200, $"File {file} could not be found."));
                 
                 return;
             }
@@ -112,7 +112,7 @@ namespace AssemblyScanner
                 };
 
                 string json = JsonSerializer.Serialize(returnObject);
-                Console.Write(json);
+                Console.WriteLine(json);
             }
         }
 
